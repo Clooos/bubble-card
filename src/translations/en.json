@@ -1,0 +1,40 @@
+{
+  "cards": {
+    "calendar": {
+      "busy": "Busy",
+      "all_day": "All day"
+    }
+  },
+  "editor": {
+    "calendar": {
+      "entity": "Entity",
+      "color": "Color",
+      "limit": "Limit",
+      "name": "Calendar",
+      "new_calendar": "Add another calendar",
+      "configuration": "Calendar configuration"
+    },
+    "common": {
+      "card_type": "Card type",
+      "card_layout": "Card layout",
+      "cols": "Columns",
+      "rows": "Rows",
+      "styling_options": "Styling options",
+      "custom_styles": "Custom styles / Templates",
+      "show_arrow": "Optional - Show arrow (Select entities only)",
+      "attribute": "Optional - Attribute to show",
+      "new_sub_button": "New sub-button",
+      "sub_button_settings": "Button settings",
+      "entity": "Entity",
+      "name": "Name",
+      "icon": "Icon",
+      "show_background": "Optional - Show background when entity is on",
+      "show_icon": "Optional - Show icon",
+      "show_name": "Optional - Show name",
+      "show_state": "Optional - Show entity state",
+      "show_last_changed": "Optional - Show last changed",
+      "show_attribute": "Optional - Show attribute",
+      "sub_button_actions": "Tap action on button"
+    }
+  }
+}

@@ -11,6 +11,12 @@ LitElement,
 html,
 css
 } from 'lit';
+import setupTranslation from '../tools/localize.ts';
+import "../custom-elements/ha-selector-calendar_entity.ts";
+import "../custom-elements/ha-selector-custom_style_alert.ts";
+import "../custom-elements/ha-selector-yaml.ts";
+import "../custom-elements/ha-selector-bubble_card_version.ts";
+import "../custom-elements/ha-selector-sub_button.ts";
 
 class BubbleCardEditor extends LitElement {
 
@@ -293,6 +299,7 @@ class BubbleCardEditor extends LitElement {
             return html``;
         }
 
+        const t = setupTranslation(this.hass);
         const homeAssistant = document.querySelector("body > home-assistant");
         if (homeAssistant?.shadowRoot) {
             const root = homeAssistant.shadowRoot;
@@ -404,6 +411,10 @@ class BubbleCardEditor extends LitElement {
                 {
                     'label': 'Separator',
                     'value': 'separator'
+                },
+                {
+                    'label': t('editor.calendar.name'),
+                    'value': 'calendar'
                 }
             ];
 
@@ -465,6 +476,109 @@ class BubbleCardEditor extends LitElement {
         const cardTypeList = this.cardTypeList;
         const buttonTypeList = this.buttonTypeList;
         const nameButton = this._config?.button_type === 'name';
+
+        const cardTypeSchema = [
+            {
+                name: 'card_type',
+                label: t('editor.common.card_type'),
+                selector: {
+                    select: {
+                        options: this.cardTypeList,
+                    },
+                },
+            },
+        ];
+
+        const stylingOptionsSchema = [
+            {
+                type: "expandable",
+                name: "",
+                icon: "mdi:palette",
+                title: t('editor.common.styling_options'),
+                schema: [
+                    {
+                        name: 'card_layout',
+                        title: t('editor.common.card_layout'),
+                        selector: {
+                            select: {
+                                placeholder: 'Normal',
+                                mode: 'dropdown',
+                                options: [
+                                    {label: 'Normal', value: 'normal'},
+                                    {label: 'Large (Optimized for sections)', value: 'large'},
+                                    {label: 'Large with 2 sub-buttons rows (Optimized for sections)', value: 'large-2-rows'}
+                                ],
+                            },
+                        },
+                    },
+                    {
+                        type: "expandable",
+                        name: "",
+                        icon: "mdi:table",
+                        title: t('editor.common.styling_options'),
+                        schema: [
+                            {
+                                name: 'rows',
+                                title: t('editor.common.rows'),
+                                selector: {
+                                    select: {
+                                        mode: 'dropdown',
+                                        options: [
+                                            { label: 'Auto', value: null },
+                                            { label: "1/4", value: 1 },
+                                            { label: "2/4", value: 2 },
+                                            { label: "3/4", value: 3 },
+                                            { label: "4/4", value: 4 }
+                                        ],
+                                    },
+                                },
+                            },
+                            {
+                                name: 'cols',
+                                title: t('editor.common.cols'),
+                                selector: {
+                                    select: {
+                                        mode: 'dropdown',
+                                        options: [
+                                            { label: 'Auto', value: null },
+                                            { label: "1/4", value: 1 },
+                                            { label: "2/4", value: 2 },
+                                            { label: "3/4", value: 3 },
+                                            { label: "4/4", value: 4 }
+                                        ],
+                                    },
+                                },
+                            },
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        const customStylesSchema = [
+            {
+                type: "expandable",
+                name: "",
+                icon: "mdi:code-braces",
+                title: t('editor.common.custom_styles'),
+                schema: [
+                    {
+                        name: 'styles',
+                        title: t('editor.common.custom_styles'),
+                        selector: {
+                            template: {}
+                        },
+                    },
+                    {
+                        name: '',
+                        selector: {
+                            custom_style_alert: {}
+                        }
+                    }
+                ]
+            }
+        ];
+
 
         if (this._config?.card_type === 'pop-up') {
             const conditions = this._config?.trigger ?? [];
@@ -1286,6 +1400,67 @@ class BubbleCardEditor extends LitElement {
                     ${this.makeVersion()}
                 </div>
             `;
+        } else if (this._config?.card_type === 'calendar') {
+                        const schema = [
+                            ...cardTypeSchema,
+                            {
+                                type: "expandable",
+                                name: "",
+                                icon: "mdi:calendar",
+                                title: t('editor.calendar.configuration'),
+                                schema: [
+                                    {
+                                        name: 'limit',
+                                        title: t('editor.calendar.limit'),
+                                        selector: { number: {} },
+                                    },
+                                    {
+                                        name: "entities",
+                                        title: t('editor.calendar.entities'),
+                                        selector: { calendar_entity: {} },
+                                    },
+                                ]
+                            },
+                            ...stylingOptionsSchema,
+                            ...customStylesSchema,
+                            {
+                                name: "sub_button",
+                                selector: {
+                                    sub_button: {}
+                                }
+                            },
+                            {
+                                name: "",
+                                selector: {
+                                    bubble_card_version: { version }
+                                }
+                            }
+                        ];
+        
+        
+                        const valueChanged = (ev) => {
+                            let config = ev.detail.value;
+                            console.log(ev.detail, config, this._config);
+        
+                            fireEvent(this, "config-changed", { config }, undefined);
+                            this._config = config;
+                            this.requestUpdate();
+                        }
+        
+                        const computeLabel = (schema) => {
+                            return schema.title || schema.label;
+                        }
+            
+
+                        return html`
+                            <ha-form
+                                .hass=${this.hass}
+                                .data=${this._config}
+                                .schema=${schema}
+                                .computeLabel=${computeLabel}
+                                @value-changed=${valueChanged}
+                            ></ha-form>
+                        `;
         } else if (this._config?.card_type === 'climate') {
             if (
                 this._config.card_type === "climate" && 
