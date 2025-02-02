@@ -6,6 +6,7 @@ import { handleButton } from './cards/button/index.js';
 import { handleSeparator } from './cards/separator/index.js';
 import { handleCover } from './cards/cover/index.js';
 import { handleEmptyColumn } from './cards/empty-column/index.js';
+import { handleCalendar } from './cards/calendar/index.js';
 import { handleMediaPlayer } from './cards/media-player/index.js';
 import { handleSelect } from './cards/select/index.js';
 import { handleClimate } from './cards/climate/index.js';
@@ -95,6 +96,11 @@ class BubbleCard extends HTMLElement {
                 handleHorizontalButtonsStack(this);
                 break;
 
+            // Update calendar
+            case 'calendar' :
+                handleCalendar(this);
+                break;
+
             // Update media player
             case 'media-player' :
                 handleMediaPlayer(this);
@@ -145,6 +151,10 @@ class BubbleCard extends HTMLElement {
             if (!config.entity && config.button_type !== 'name') {
                 throw new Error("You need to define an entity");
             }
+        } else if (config.card_type === 'calendar') {
+            if (!config.entities) {
+                throw new Error("You need to define an entity list");
+            }
         }
 
         if (config.card_type === 'select' && config.entity && !config.select_attribute) {
@@ -191,6 +201,8 @@ class BubbleCard extends HTMLElement {
                 return 1;
             case 'horizontal-buttons-stack':
                 return 0;
+            case 'calendar':
+                return 1;
             case 'media-player':
                 return 1;
             case 'select':
