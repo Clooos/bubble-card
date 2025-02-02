@@ -11,7 +11,7 @@ Bubble Card is a minimalist and customizable card collection for Home Assistant 
 
 ## Table of contents
 
-**[`Installation`](#installation)**  **[`Configuration`](#configuration)**  **[`Pop-up`](#pop-up)**  **[`Horizontal buttons stack`](#horizontal-buttons-stack)**  **[`Button`](#button)**  **[`Media player`](#media-player)**  **[`Cover`](#cover)**  **[`Select`](#select)**  **[`Climate`](#climate)**  **[`Separator`](#separator)**  **[`Empty column`](#empty-column)**  **[`Sub-buttons`](#sub-buttons)**  **[`Card layouts`](#card-layouts)**  **[`Actions`](#tap-double-tap-and-hold-actions)**  **[`Styling`](#styling)**  **[`Templates`](#templates)**  **[`Conflicts`](#custom-components-conflicts)**  **[`Help`](#help)**  **[`Donate`](#donate)**
+**[`Installation`](#installation)**  **[`Configuration`](#configuration)**  **[`Pop-up`](#pop-up)**  **[`Horizontal buttons stack`](#horizontal-buttons-stack)**  **[`Button`](#button)**  **[`Media player`](#media-player)**  **[`Cover`](#cover)**  **[`Select`](#select)**  **[`Climate`](#climate)**  **[`Calendar`](#calendar)**  **[`Separator`](#separator)**  **[`Empty column`](#empty-column)**  **[`Sub-buttons`](#sub-buttons)**  **[`Card layouts`](#card-layouts)**  **[`Actions`](#tap-double-tap-and-hold-actions)**  **[`Styling`](#styling)**  **[`Templates`](#templates)**  **[`Conflicts`](#custom-components-conflicts)**  **[`Help`](#help)**  **[`Donate`](#donate)**
 
 <br>
 
@@ -895,6 +895,92 @@ sub_button:
 ---
 
 <br>
+
+## Calendar
+
+<!-- ![readme-climate-card](https://github.com/user-attachments/assets/59145c69-2f85-4ee7-a290-e848971e1925)  -->
+
+This card allows you to display your `calendar` entities.
+
+### Calendar options
+
+<details>
+
+**<summary>Options (YAML + descriptions)</summary>**
+
+| Name                | Type    | Requirement  | Supported options                               | Description                                                                             |
+|---------------------|---------|--------------|-------------------------------------------------|-----------------------------------------------------------------------------------------|
+| `entities`          | object  | **Required** | A calendar entity object (see below)            | The entity to control (e.g., `calendar.main_calendar`).                                 |
+| `entities.entity`   | string  | **Required** | A calendar entity                               | The calendar entity to display                                                          |
+| `entities.color`    | string  | Optional     | A color                                         | A custom color for the calendar chip. If not defined, an automatic color will be picked |
+| `limit`             | number  | Optional     | A number                                        | The amont of events that will be displayed on the card                                  |
+| `show_end`          | boolean | Optional     | `true` or `false` (default)                     | Show or hide the end time for events                                                    |
+| `show_progress`     | boolean | Optional     | `true` (default) or `false`                     | Show or hide the event progress bar                                                     |
+| `tap_action`        | object  | Optional     | See [actions](#tap-double-tap-and-hold-actions) | Define the action triggered on tap. If not defined, `more-info` will be used.           |
+| `double_tap_action` | object  | Optional     | See [actions](#tap-double-tap-and-hold-actions) | Define the action triggered on double tap. If not defined, `toggle` will be used.       |
+| `hold_action`       | object  | Optional     | See [actions](#tap-double-tap-and-hold-actions) | Define the action triggered on hold. If not defined, `more-info` will be used.          |
+| `card_layout`       | string  | Optional     | `normal` (default), `large`, `large-2-rows`     | Defines the styling layout of the card. See [card layouts](#card-layouts).              |
+| `columns`           | string  | Optional     | `1`, `2`, `3`, or `4` (default)                 | Number of columns when placed in a **section view**.                                    |
+| `rows`              | string  | Optional     | `1` (default), `2`, `3`, or `4`                 | Number of rows when placed in a **section view**.                                       |
+| `sub_button`        | object  | Optional     | See [sub-buttons](#sub-buttons)                 | Adds custom buttons fixed to the right. Useful for a climate mode select menu.          |
+
+</details>
+
+<details>
+
+**<summary>CSS variables (see [Styling](#styling))</summary>**
+
+| Variable                                  | Expected value | Description                                                        |
+| ----------------------------------------- | -------------- | ------------------------------------------------------------------ |
+| `--bubble-calendar-main-background-color` | `color`        | Main background color for supported elements in the calendar card  |
+| `--bubble-calendar-border-radius`         | `px`           | Border radius for supported elements in the calendar card elements |
+| `--bubble-calendar-height`                | `px`           | Height for the climate card                                        |
+
+</details>
+
+#### Examples
+
+<details>
+
+<summary>A calendar card with a limited amount of events</summary>
+
+<br>
+
+```yaml
+type: custom:bubble-card
+card_type: calendar
+entities:
+  - entity: calendar.main_calendar
+    color: '#ffb010'
+limit: 1
+```
+
+</details>
+
+<details>
+
+<summary>A calendar card with an end time and a progress bar</summary>
+
+<br>
+
+```yaml
+type: custom:bubble-card
+card_type: calendar
+entities:
+  - entity: calendar.main_calendar
+    color: '#ffb010'
+show_end: true
+show_progress: true
+```
+
+</details>
+
+<br>
+
+---
+
+<br>
+
 
 ## Separator
 
