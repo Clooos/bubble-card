@@ -1,0 +1,20 @@
+{
+  "cards": {
+    "calendar": {
+      "busy": "Occupé",
+      "all_day": "Journée"
+    }
+  },
+  "editor": {
+    "calendar": {
+      "entity": "Entité",
+      "color": "Couleur",
+      "limit": "Limite",
+      "show_end": "Voir l'heure de fin",
+      "show_progress": "Voir la progression",
+      "name": "Calendrier",
+      "new_calendar": "Ajouter un autre calendrier",
+      "settings": "Paramètres du calendrier"
+    }
+  }
+}

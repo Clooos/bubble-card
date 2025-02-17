@@ -13,9 +13,11 @@ import { renderHorButtonStackEditor } from '../cards/horizontal-buttons-stack/ed
 import { renderCoverEditor } from '../cards/cover/editor.js';
 import { renderClimateEditor } from '../cards/climate/editor.js';
 import { renderSelectEditor } from '../cards/select/editor.js';
+import { renderCalendarEditor } from '../cards/calendar/editor.js';
 import { renderMediaPlayerEditor } from '../cards/media-player/editor.js';
 import { renderEmptyColumnEditor } from '../cards/empty-column/editor.js';
 import { yamlKeysMap, loadYAMLStyles } from '../tools/style-utils.js'
+import setupTranslation from '../tools/localize.js';
 import styles from './styles.css'
 
 class BubbleCardEditor extends LitElement {
@@ -63,6 +65,7 @@ class BubbleCardEditor extends LitElement {
             return html``;
         }
 
+        const t = setupTranslation(this.hass);
         const homeAssistant = document.querySelector("body > home-assistant");
         if (homeAssistant?.shadowRoot) {
             const root = homeAssistant.shadowRoot;
@@ -114,6 +117,10 @@ class BubbleCardEditor extends LitElement {
             this.cardTypeList = [{
                     'label': 'Button (Switch, slider, ...)',
                     'value': 'button'
+                },
+                {
+                    'label': t('editor.calendar.name'),
+                    'value': 'calendar'
                 },
                 {
                     'label': 'Cover',
@@ -174,6 +181,8 @@ class BubbleCardEditor extends LitElement {
                 return renderSelectEditor(this);
             case 'climate':
                 return renderClimateEditor(this);
+            case 'calendar':
+                return renderCalendarEditor(this);
             case undefined:
                 return html`
                     <div class="card-config">
